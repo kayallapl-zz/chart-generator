@@ -8,17 +8,23 @@ import Button from '../../components/Button';
 export default class Home extends Component {
   
   state = {
+    inputData: "",
     data: "",
-    obj: "{}"
+    obj: []
   }
   
   handleTextChange(text) {
-    this.setState({ data: text.target.value });
+    this.setState({ inputData: text.target.value });
   }
   
-  handleButtonClick() {
-    this.setState({ obj: this.state.data });
-    console.log(this.state.obj);
+  handleAddData() {
+    if (this.state.data === ""){
+      this.setState({ data: this.state.inputData});
+    } else{
+      const string = this.state.data + ", " + this.state.inputData
+      this.setState({ data: string});
+    }
+    this.setState({ obj: this.state.data });    
   }
 
   render() {
@@ -31,6 +37,7 @@ export default class Home extends Component {
     return (
       <div>
         <textarea className="code-area" onChange={(text) => {this.handleTextChange(text)}}></textarea>
+        <Button className="add-data" onClick={() => { this.handleAddData() }} />
         <LineChart
           width={600}
           height={300}
@@ -42,7 +49,6 @@ export default class Home extends Component {
           <XAxis dataKey="name" />
           <YAxis />
         </LineChart>
-        <Button className="generate-chart-button" onClick={() => { this.handleButtonClick() }} />
       </div>
     );
   }
